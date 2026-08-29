@@ -1,0 +1,2066 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Night Shift Multiplayer</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+button {
+    cursor: pointer;
+    color: white;
+    background: #181818;
+    border: 1px solid #555;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: #292929;
+}
+
+/* ================= MENU ================= */
+
+#menu {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        radial-gradient(circle, #222 0%, #080808 60%, #000 100%);
+}
+
+#menu h1 {
+    margin: 0;
+    font-size: 52px;
+    letter-spacing: 7px;
+}
+
+#menu p {
+    color: #888;
+    letter-spacing: 2px;
+}
+
+.menuButton {
+    width: 290px;
+    height: 55px;
+    margin: 8px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#roomInput {
+    width: 290px;
+    height: 50px;
+    margin: 8px;
+
+    text-align: center;
+    font-size: 18px;
+    letter-spacing: 5px;
+
+    color: white;
+    background: #111;
+    border: 1px solid #555;
+    border-radius: 5px;
+
+    outline: none;
+}
+
+#roomCode {
+    margin-top: 15px;
+
+    font-size: 28px;
+    color: #ffd84d;
+    letter-spacing: 8px;
+}
+
+#status {
+    margin-top: 12px;
+    color: #999;
+}
+
+/* ================= GAME ================= */
+
+#game {
+    display: none;
+
+    position: fixed;
+    inset: 0;
+
+    background: #080808;
+}
+
+/* ================= OFFICE ================= */
+
+#office {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #070707 0%,
+            #161616 17%,
+            #222 50%,
+            #161616 83%,
+            #070707 100%
+        );
+}
+
+/* back wall */
+
+#wall {
+    position: absolute;
+
+    left: 17%;
+    right: 17%;
+    top: 0;
+    bottom: 25%;
+
+    background: linear-gradient(#202020, #111);
+
+    border-left: 4px solid #303030;
+    border-right: 4px solid #303030;
+}
+
+/* floor */
+
+#floor {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 25%;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #111 0px,
+            #111 50px,
+            #181818 51px,
+            #181818 100px
+        );
+
+    border-top: 4px solid #333;
+}
+
+/* desk */
+
+#desk {
+    position: absolute;
+
+    left: 50%;
+    bottom: 19%;
+
+    transform: translateX(-50%);
+
+    width: 48%;
+    height: 16%;
+
+    background: linear-gradient(#444, #151515);
+
+    border: 3px solid #555;
+
+    box-shadow: 0 15px 35px #000;
+}
+
+/* monitor */
+
+#monitor {
+    position: absolute;
+
+    left: 50%;
+    top: -82px;
+
+    transform: translateX(-50%);
+
+    width: 155px;
+    height: 92px;
+
+    background: #050505;
+
+    border: 8px solid #292929;
+}
+
+#monitorScreen {
+    position: absolute;
+    inset: 9px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #102010;
+
+    color: #55ff55;
+
+    font-size: 11px;
+}
+
+/* ================= DOORS ================= */
+
+.door {
+    position: absolute;
+
+    top: 19%;
+    bottom: 25%;
+
+    width: 15%;
+
+    background: #050505;
+
+    border: 5px solid #333;
+}
+
+#leftDoor {
+    left: 0;
+}
+
+#rightDoor {
+    right: 0;
+}
+
+.doorPanel {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: -100%;
+
+    height: 100%;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            #383838 0px,
+            #383838 25px,
+            #1b1b1b 26px,
+            #1b1b1b 50px
+        );
+
+    transition: top .2s;
+}
+
+.door.closed .doorPanel {
+    top: 0;
+}
+
+/* ================= LIGHT ================= */
+
+.light {
+    position: absolute;
+
+    top: 45%;
+
+    width: 18%;
+    height: 22%;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(255,255,220,.85),
+            rgba(255,255,220,.2),
+            transparent 70%
+        );
+}
+
+#leftLight {
+    left: 0;
+}
+
+#rightLight {
+    right: 0;
+}
+
+.light.on {
+    opacity: 1;
+}
+
+/* ================= HUD ================= */
+
+#hud {
+    position: absolute;
+
+    left: 15px;
+    top: 15px;
+
+    padding: 12px;
+
+    background: rgba(0,0,0,.8);
+
+    border: 1px solid #444;
+
+    z-index: 20;
+
+    font-size: 13px;
+}
+
+#powerBar {
+    width: 160px;
+    height: 10px;
+
+    margin-top: 5px;
+
+    background: #222;
+
+    border: 1px solid #555;
+}
+
+#powerFill {
+    width: 100%;
+    height: 100%;
+
+    background: #ddd;
+}
+
+#time {
+    margin-top: 7px;
+    color: #ffd84d;
+}
+
+/* ================= ROLE ================= */
+
+#role {
+    position: absolute;
+
+    right: 15px;
+    top: 15px;
+
+    padding: 10px 15px;
+
+    background: rgba(0,0,0,.8);
+
+    border: 1px solid #444;
+
+    z-index: 20;
+}
+
+/* ================= CONTROLS ================= */
+
+#controls {
+    position: absolute;
+
+    left: 50%;
+    bottom: 3%;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    gap: 7px;
+
+    z-index: 30;
+}
+
+.control {
+    width: 125px;
+    height: 45px;
+
+    font-size: 12px;
+}
+
+/* ================= CAMERA ================= */
+
+#cameraButton {
+    position: absolute;
+
+    left: 50%;
+    bottom: 20px;
+
+    transform: translateX(-50%);
+
+    width: 180px;
+    height: 50px;
+
+    z-index: 40;
+}
+
+#cameras {
+    display: none;
+
+    position: absolute;
+    inset: 0;
+
+    background: #050505;
+
+    z-index: 100;
+}
+
+#cameraView {
+    position: absolute;
+
+    left: 4%;
+    top: 5%;
+
+    width: 67%;
+    height: 82%;
+
+    border: 3px solid #555;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,.03) 0px,
+            rgba(255,255,255,.03) 2px,
+            transparent 3px,
+            transparent 7px
+        ),
+        #111;
+
+    overflow: hidden;
+}
+
+#cameraName {
+    position: absolute;
+
+    left: 20px;
+    top: 15px;
+
+    font-size: 22px;
+
+    z-index: 2;
+}
+
+#roomVisual {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    font-size: 34px;
+    color: #444;
+}
+
+#animatronic {
+    position: absolute;
+
+    left: 50%;
+    top: 55%;
+
+    transform: translate(-50%, -50%);
+
+    display: none;
+
+    font-size: 90px;
+
+    filter: grayscale(1) contrast(1.5);
+}
+
+#cameraStatic {
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: .12;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent 0px,
+            transparent 3px,
+            white 4px,
+            transparent 5px
+        );
+}
+
+#cameraMap {
+    position: absolute;
+
+    right: 3%;
+    top: 7%;
+
+    width: 24%;
+
+    padding: 12px;
+
+    border: 2px solid #444;
+
+    background: #0d0d0d;
+}
+
+#cameraMap h3 {
+    text-align: center;
+    color: #aaa;
+}
+
+.cam {
+    width: 100%;
+    height: 42px;
+
+    margin: 5px 0;
+
+    font-size: 12px;
+}
+
+.cam.active {
+    background: #555;
+}
+
+#closeCamera {
+    position: absolute;
+
+    right: 3%;
+    bottom: 7%;
+
+    width: 24%;
+    height: 48px;
+}
+
+/* ================= MESSAGE ================= */
+
+#message {
+    display: none;
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    z-index: 200;
+
+    text-align: center;
+
+    font-size: 38px;
+
+    white-space: pre-line;
+
+    text-shadow: 0 0 20px #000;
+}
+
+/* ================= ANIMATRONIC MODE ================= */
+
+#animatronicMode {
+    display: none;
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(circle, #222 0%, #050505 70%);
+
+    z-index: 90;
+}
+
+#animatronicMode h1 {
+    text-align: center;
+    margin-top: 60px;
+}
+
+#animatronicMode p {
+    text-align: center;
+    color: #888;
+}
+
+#animatronicControls {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    text-align: center;
+}
+
+#animatronicControls button {
+    width: 180px;
+    height: 55px;
+    margin: 8px;
+}
+
+#currentPosition {
+    margin: 20px;
+
+    font-size: 25px;
+
+    color: #ffd84d;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ================= MENU ================= -->
+
+<div id="menu">
+
+```
+<h1>NIGHT SHIFT</h1>
+
+<p>MULTIPLAYER SECURITY SYSTEM</p>
+
+<button
+    id="createButton"
+    class="menuButton"
+    disabled
+>
+    СОЗДАТЬ КОМНАТУ
+</button>
+
+<input
+    id="roomInput"
+    placeholder="КОД КОМНАТЫ"
+    maxlength="5"
+>
+
+<button
+    id="joinButton"
+    class="menuButton"
+    disabled
+>
+    ВОЙТИ В КОМНАТУ
+</button>
+
+<div id="roomCode"></div>
+
+<div id="status">
+    Подключение к серверу...
+</div>
+```
+
+</div>
+
+<!-- ================= GAME ================= -->
+
+<div id="game">
+
+```
+<div id="office">
+
+    <div id="wall"></div>
+
+    <div id="floor"></div>
+
+    <div
+        id="leftDoor"
+        class="door"
+    >
+        <div class="doorPanel"></div>
+    </div>
+
+    <div
+        id="rightDoor"
+        class="door"
+    >
+        <div class="doorPanel"></div>
+    </div>
+
+    <div
+        id="leftLight"
+        class="light"
+    ></div>
+
+    <div
+        id="rightLight"
+        class="light"
+    ></div>
+
+    <div id="desk">
+
+        <div id="monitor">
+
+            <div id="monitorScreen">
+                SECURITY SYSTEM
+            </div>
+
+        </div>
+
+    </div>
+
+    <button id="cameraButton">
+        📹 КАМЕРЫ
+    </button>
+
+</div>
+
+
+<!-- HUD -->
+
+<div id="hud">
+
+    <div>NIGHT 1</div>
+
+    <div>
+        POWER
+    </div>
+
+    <div id="powerBar">
+        <div id="powerFill"></div>
+    </div>
+
+    <div id="time">
+        12 AM
+    </div>
+
+</div>
+
+
+<div id="role">
+    Роль
+</div>
+
+
+<!-- CONTROLS -->
+
+<div id="controls">
+
+    <button
+        id="leftDoorButton"
+        class="control"
+    >
+        🚪 ЛЕВАЯ ДВЕРЬ
+    </button>
+
+    <button
+        id="leftLightButton"
+        class="control"
+    >
+        💡 ЛЕВЫЙ СВЕТ
+    </button>
+
+    <button
+        id="rightLightButton"
+        class="control"
+    >
+        💡 ПРАВЫЙ СВЕТ
+    </button>
+
+    <button
+        id="rightDoorButton"
+        class="control"
+    >
+        🚪 ПРАВАЯ ДВЕРЬ
+    </button>
+
+</div>
+
+
+<!-- CAMERA SYSTEM -->
+
+<div id="cameras">
+
+    <div id="cameraView">
+
+        <div id="cameraName">
+            CAM 01
+        </div>
+
+        <div id="roomVisual">
+            STAGE
+        </div>
+
+        <div id="animatronic">
+            🤖
+        </div>
+
+        <div id="cameraStatic"></div>
+
+    </div>
+
+
+    <div id="cameraMap">
+
+        <h3>CAMERAS</h3>
+
+        <button
+            class="cam"
+            data-camera="1"
+        >
+            CAM 01 — STAGE
+        </button>
+
+        <button
+            class="cam"
+            data-camera="2"
+        >
+            CAM 02 — DINING
+        </button>
+
+        <button
+            class="cam"
+            data-camera="3"
+        >
+            CAM 03 — HALL
+        </button>
+
+        <button
+            class="cam"
+            data-camera="4"
+        >
+            CAM 04 — STORAGE
+        </button>
+
+        <button
+            class="cam"
+            data-camera="5"
+        >
+            CAM 05 — LEFT HALL
+        </button>
+
+        <button
+            class="cam"
+            data-camera="6"
+        >
+            CAM 06 — RIGHT HALL
+        </button>
+
+    </div>
+
+
+    <button id="closeCamera">
+        ЗАКРЫТЬ КАМЕРЫ
+    </button>
+
+</div>
+
+
+<!-- ANIMATRONIC MODE -->
+
+<div id="animatronicMode">
+
+    <h1>🤖 АНИМАТРОНИК</h1>
+
+    <p>
+        Ты управляешь аниматроником.
+    </p>
+
+    <div id="animatronicControls">
+
+        <div id="currentPosition">
+            CAM 01
+        </div>
+
+        <button id="moveLeft">
+            ← НАЗАД
+        </button>
+
+        <button id="moveRight">
+            ВПЕРЁД →
+        </button>
+
+    </div>
+
+</div>
+
+
+<div id="message"></div>
+```
+
+</div>
+
+<script>
+
+/* ============================================================
+   CONNECTION
+============================================================ */
+
+let socket = null;
+
+let player = null;
+let room = null;
+
+let connected = false;
+
+
+/* ============================================================
+   GAME STATE
+============================================================ */
+
+const state = {
+
+    leftDoor: false,
+    rightDoor: false,
+
+    leftLight: false,
+    rightLight: false,
+
+    camera: 1,
+
+    animatronicCamera: 1,
+
+    power: 100,
+
+    hour: 0
+
+};
+
+
+/* ============================================================
+   ELEMENTS
+============================================================ */
+
+const menu =
+    document.getElementById("menu");
+
+const game =
+    document.getElementById("game");
+
+const status =
+    document.getElementById("status");
+
+const createButton =
+    document.getElementById("createButton");
+
+const joinButton =
+    document.getElementById("joinButton");
+
+const roomInput =
+    document.getElementById("roomInput");
+
+const roomCode =
+    document.getElementById("roomCode");
+
+const role =
+    document.getElementById("role");
+
+const leftDoor =
+    document.getElementById("leftDoor");
+
+const rightDoor =
+    document.getElementById("rightDoor");
+
+const leftLight =
+    document.getElementById("leftLight");
+
+const rightLight =
+    document.getElementById("rightLight");
+
+const cameras =
+    document.getElementById("cameras");
+
+const cameraName =
+    document.getElementById("cameraName");
+
+const roomVisual =
+    document.getElementById("roomVisual");
+
+const animatronic =
+    document.getElementById("animatronic");
+
+const powerFill =
+    document.getElementById("powerFill");
+
+const time =
+    document.getElementById("time");
+
+const message =
+    document.getElementById("message");
+
+const animatronicMode =
+    document.getElementById("animatronicMode");
+
+const currentPosition =
+    document.getElementById("currentPosition");
+
+
+/* ============================================================
+   CONNECT TO CURRENT SERVER
+============================================================ */
+
+function connect() {
+
+    const protocol =
+        location.protocol === "https:"
+            ? "wss:"
+            : "ws:";
+
+    const address =
+        protocol +
+        "//" +
+        location.host;
+
+    console.log(
+        "WebSocket:",
+        address
+    );
+
+    socket =
+        new WebSocket(address);
+
+
+    socket.addEventListener(
+        "open",
+        () => {
+
+            connected = true;
+
+            status.textContent =
+                "Сервер подключён!";
+
+            createButton.disabled =
+                false;
+
+            joinButton.disabled =
+                false;
+
+        }
+    );
+
+
+    socket.addEventListener(
+        "close",
+        () => {
+
+            connected = false;
+
+            status.textContent =
+                "Соединение с сервером закрыто.";
+
+            createButton.disabled =
+                true;
+
+            joinButton.disabled =
+                true;
+
+        }
+    );
+
+
+    socket.addEventListener(
+        "error",
+        () => {
+
+            status.textContent =
+                "Ошибка WebSocket.";
+
+        }
+    );
+
+
+    socket.addEventListener(
+        "message",
+        event => {
+
+            let data;
+
+            try {
+
+                data =
+                    JSON.parse(
+                        event.data
+                    );
+
+            } catch (error) {
+
+                console.error(
+                    "Ошибка JSON:",
+                    error
+                );
+
+                return;
+            }
+
+
+            console.log(
+                "SERVER:",
+                data
+            );
+
+
+            /* CONNECTED */
+
+            if (
+                data.type ===
+                "connected"
+            ) {
+
+                status.textContent =
+                    "Сервер подключён!";
+
+                return;
+            }
+
+
+            /* ROOM CREATED */
+
+            if (
+                data.type ===
+                "created"
+            ) {
+
+                player =
+                    data.player;
+
+                room =
+                    data.code;
+
+                roomCode.textContent =
+                    "КОД: " +
+                    room;
+
+                status.textContent =
+                    "Комната создана. Ждём второго игрока...";
+
+                role.textContent =
+                    "👮 ОХРАННИК";
+
+                return;
+            }
+
+
+            /* ROOM JOINED */
+
+            if (
+                data.type ===
+                "joined"
+            ) {
+
+                player =
+                    data.player;
+
+                room =
+                    data.code;
+
+                role.textContent =
+                    "🤖 АНИМАТРОНИК";
+
+                status.textContent =
+                    "Ты вошёл в комнату.";
+
+                return;
+            }
+
+
+            /* GAME START */
+
+            if (
+                data.type ===
+                "start"
+            ) {
+
+                startGame();
+
+                return;
+            }
+
+
+            /* OLD SERVER STATE */
+
+            if (
+                data.type ===
+                "state"
+            ) {
+
+                return;
+            }
+
+
+            /* ACTION */
+
+            if (
+                data.type ===
+                "action"
+            ) {
+
+                processAction(data);
+
+                return;
+            }
+
+
+            /* PLAYER LEFT */
+
+            if (
+                data.type ===
+                "left"
+            ) {
+
+                status.textContent =
+                    "Второй игрок отключился.";
+
+                return;
+            }
+
+
+            /* ERROR */
+
+            if (
+                data.type ===
+                "error"
+            ) {
+
+                status.textContent =
+                    data.message;
+
+                return;
+            }
+
+        }
+    );
+}
+
+
+/* ============================================================
+   CREATE ROOM
+============================================================ */
+
+createButton.addEventListener(
+    "click",
+    () => {
+
+        if (!connected) {
+
+            status.textContent =
+                "Нет подключения к серверу.";
+
+            return;
+        }
+
+        socket.send(
+            JSON.stringify({
+                type: "create"
+            })
+        );
+
+    }
+);
+
+
+/* ============================================================
+   JOIN ROOM
+============================================================ */
+
+joinButton.addEventListener(
+    "click",
+    () => {
+
+        if (!connected) {
+
+            status.textContent =
+                "Нет подключения к серверу.";
+
+            return;
+        }
+
+
+        const code =
+            roomInput.value
+                .trim()
+                .toUpperCase();
+
+
+        if (code.length !== 5) {
+
+            status.textContent =
+                "Код должен содержать 5 символов.";
+
+            return;
+        }
+
+
+        socket.send(
+            JSON.stringify({
+
+                type: "join",
+
+                code: code
+
+            })
+        );
+
+    }
+);
+
+
+/* ============================================================
+   START GAME
+============================================================ */
+
+function startGame() {
+
+    menu.style.display =
+        "none";
+
+    game.style.display =
+        "block";
+
+
+    if (player === 1) {
+
+        role.textContent =
+            "👮 ОХРАННИК";
+
+        animatronicMode.style.display =
+            "none";
+
+    } else {
+
+        role.textContent =
+            "🤖 АНИМАТРОНИК";
+
+        document.getElementById(
+            "office"
+        ).style.display =
+            "none";
+
+        document.getElementById(
+            "hud"
+        ).style.display =
+            "none";
+
+        document.getElementById(
+            "controls"
+        ).style.display =
+            "none";
+
+        animatronicMode.style.display =
+            "block";
+
+    }
+
+    render();
+
+}
+
+
+/* ============================================================
+   SEND ACTION
+============================================================ */
+
+function sendAction(action) {
+
+    if (!connected) {
+        return;
+    }
+
+    socket.send(
+        JSON.stringify({
+
+            type: "action",
+
+            action: action
+
+        })
+    );
+
+}
+
+
+/* ============================================================
+   PROCESS NETWORK ACTION
+============================================================ */
+
+function processAction(data) {
+
+    const action =
+        String(
+            data.action || ""
+        );
+
+if (data.player === player) {
+    return;
+}
+    /* ================= DOORS ================= */
+
+    if (
+        action ===
+        "leftDoor"
+    ) {
+
+        state.leftDoor =
+            data.player === 1
+                ? !state.leftDoor
+                : state.leftDoor;
+
+        render();
+
+        return;
+    }
+
+
+    if (
+        action ===
+        "rightDoor"
+    ) {
+
+        state.rightDoor =
+            data.player === 1
+                ? !state.rightDoor
+                : state.rightDoor;
+
+        render();
+
+        return;
+    }
+
+
+    /* ================= LIGHT ================= */
+
+    if (
+        action ===
+        "leftLight"
+    ) {
+
+        state.leftLight =
+            data.player === 1
+                ? !state.leftLight
+                : state.leftLight;
+
+        render();
+
+        return;
+    }
+
+
+    if (
+        action ===
+        "rightLight"
+    ) {
+
+        state.rightLight =
+            data.player === 1
+                ? !state.rightLight
+                : state.rightLight;
+
+        render();
+
+        return;
+    }
+
+
+    /* ================= CAMERA ================= */
+
+    if (
+        action.startsWith(
+            "camera:"
+        )
+    ) {
+
+        const cam =
+            Number(
+                action.split(":")[1]
+            );
+
+        if (
+            Number.isFinite(cam)
+        ) {
+
+            state.camera =
+                cam;
+
+            render();
+
+        }
+
+        return;
+    }
+
+
+    /* ================= ANIMATRONIC ================= */
+
+    if (
+        action.startsWith(
+            "animatronic:"
+        )
+    ) {
+
+        const cam =
+            Number(
+                action.split(":")[1]
+            );
+
+        if (
+            Number.isFinite(cam)
+        ) {
+
+            state.animatronicCamera =
+                cam;
+
+            render();
+
+        }
+
+        return;
+    }
+
+}
+
+
+/* ============================================================
+   DOOR CONTROLS
+============================================================ */
+
+document
+    .getElementById(
+        "leftDoorButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            if (player !== 1) {
+                return;
+            }
+
+            state.leftDoor =
+                !state.leftDoor;
+
+            sendAction(
+                "leftDoor"
+            );
+
+            render();
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "rightDoorButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            if (player !== 1) {
+                return;
+            }
+
+            state.rightDoor =
+                !state.rightDoor;
+
+            sendAction(
+                "rightDoor"
+            );
+
+            render();
+
+        }
+    );
+
+
+/* ============================================================
+   LIGHT CONTROLS
+============================================================ */
+
+document
+    .getElementById(
+        "leftLightButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            if (player !== 1) {
+                return;
+            }
+
+            state.leftLight =
+                !state.leftLight;
+
+            sendAction(
+                "leftLight"
+            );
+
+            render();
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "rightLightButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            if (player !== 1) {
+                return;
+            }
+
+            state.rightLight =
+                !state.rightLight;
+
+            sendAction(
+                "rightLight"
+            );
+
+            render();
+
+        }
+    );
+
+
+/* ============================================================
+   CAMERA OPEN
+============================================================ */
+
+document
+    .getElementById(
+        "cameraButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            if (player !== 1) {
+                return;
+            }
+
+            cameras.style.display =
+                "block";
+
+            render();
+
+        }
+    );
+
+
+/* ============================================================
+   CAMERA CLOSE
+============================================================ */
+
+document
+    .getElementById(
+        "closeCamera"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            cameras.style.display =
+                "none";
+
+        }
+    );
+
+
+/* ============================================================
+   CAMERA BUTTONS
+============================================================ */
+
+document
+    .querySelectorAll(
+        ".cam"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    if (player !== 1) {
+                        return;
+                    }
+
+
+                    const cam =
+                        Number(
+                            button.dataset.camera
+                        );
+
+
+                    state.camera =
+                        cam;
+
+
+                    sendAction(
+                        "camera:" +
+                        cam
+                    );
+
+
+                    render();
+
+                }
+            );
+
+        }
+    );
+
+
+/* ============================================================
+   ANIMATRONIC CONTROLS
+============================================================ */
+
+document
+    .getElementById(
+        "moveLeft"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            if (player !== 2) {
+                return;
+            }
+
+
+            state.animatronicCamera =
+                Math.max(
+                    1,
+                    state.animatronicCamera - 1
+                );
+
+
+            sendAction(
+                "animatronic:" +
+                state.animatronicCamera
+            );
+
+
+            render();
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "moveRight"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            if (player !== 2) {
+                return;
+            }
+
+
+            state.animatronicCamera =
+                Math.min(
+                    6,
+                    state.animatronicCamera + 1
+                );
+
+
+            sendAction(
+                "animatronic:" +
+                state.animatronicCamera
+            );
+
+
+            render();
+
+        }
+    );
+
+
+/* ============================================================
+   KEYBOARD FOR ANIMATRONIC
+============================================================ */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (player !== 2) {
+            return;
+        }
+
+
+        if (
+            event.key ===
+            "ArrowLeft"
+        ) {
+
+            document
+                .getElementById(
+                    "moveLeft"
+                )
+                .click();
+
+        }
+
+
+        if (
+            event.key ===
+            "ArrowRight"
+        ) {
+
+            document
+                .getElementById(
+                    "moveRight"
+                )
+                .click();
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   RENDER
+============================================================ */
+
+function render() {
+
+    /* doors */
+
+    leftDoor.classList.toggle(
+        "closed",
+        state.leftDoor
+    );
+
+    rightDoor.classList.toggle(
+        "closed",
+        state.rightDoor
+    );
+
+
+    /* lights */
+
+    leftLight.classList.toggle(
+        "on",
+        state.leftLight
+    );
+
+    rightLight.classList.toggle(
+        "on",
+        state.rightLight
+    );
+
+
+    /* power */
+
+    powerFill.style.width =
+        Math.max(
+            0,
+            state.power
+        ) +
+        "%";
+
+
+    /* time */
+
+    const hours = [
+        "12 AM",
+        "1 AM",
+        "2 AM",
+        "3 AM",
+        "4 AM",
+        "5 AM",
+        "6 AM"
+    ];
+
+    time.textContent =
+        hours[
+            Math.min(
+                6,
+                state.hour
+            )
+        ];
+
+
+    /* camera */
+
+    const names = {
+
+        1: "STAGE",
+        2: "DINING AREA",
+        3: "HALL",
+        4: "STORAGE",
+        5: "LEFT HALL",
+        6: "RIGHT HALL"
+
+    };
+
+
+    cameraName.textContent =
+        "CAM " +
+        String(
+            state.camera
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    roomVisual.textContent =
+        names[
+            state.camera
+        ];
+
+
+    /* animatronic */
+
+    animatronic.style.display =
+        state.camera ===
+        state.animatronicCamera
+            ? "block"
+            : "none";
+
+
+    currentPosition.textContent =
+        "CAM " +
+        String(
+            state.animatronicCamera
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    /* active camera */
+
+    document
+        .querySelectorAll(
+            ".cam"
+        )
+        .forEach(
+            button => {
+
+                button.classList.toggle(
+                    "active",
+                    Number(
+                        button.dataset.camera
+                    ) ===
+                    state.camera
+                );
+
+            }
+        );
+
+}
+
+
+/* ============================================================
+   POWER
+============================================================ */
+
+setInterval(
+    () => {
+
+        if (
+            player !== 1 ||
+            game.style.display !==
+            "block"
+        ) {
+            return;
+        }
+
+
+        let drain = 0.04;
+
+
+        if (state.leftDoor) {
+            drain += 0.05;
+        }
+
+        if (state.rightDoor) {
+            drain += 0.05;
+        }
+
+        if (state.leftLight) {
+            drain += 0.03;
+        }
+
+        if (state.rightLight) {
+            drain += 0.03;
+        }
+
+
+        state.power =
+            Math.max(
+                0,
+                state.power - drain
+            );
+
+
+        render();
+
+
+        if (
+            state.power <= 0
+        ) {
+
+            message.textContent =
+                "ЭНЕРГИЯ ЗАКОНЧИЛАСЬ";
+
+            message.style.display =
+                "block";
+
+        }
+
+    },
+    1000
+);
+
+
+/* ============================================================
+   NIGHT CLOCK
+============================================================ */
+
+setInterval(
+    () => {
+
+        if (
+            player !== 1 ||
+            game.style.display !==
+            "block"
+        ) {
+            return;
+        }
+
+
+        state.hour++;
+
+
+        if (
+            state.hour >= 6
+        ) {
+
+            state.hour = 6;
+
+            message.textContent =
+                "6 AM\n\nТЫ ВЫЖИЛ!";
+
+            message.style.display =
+                "block";
+
+        }
+
+
+        render();
+
+    },
+    20000
+);
+
+
+/* ============================================================
+   START
+============================================================ */
+
+render();
+
+connect();
+
+</script>
+
+</body>
+</html>
