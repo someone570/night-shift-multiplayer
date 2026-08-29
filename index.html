@@ -14,54 +14,68 @@
 
 body {
     margin: 0;
-    background: #050505;
-    color: #eee;
-    font-family: Arial, sans-serif;
     min-height: 100vh;
+    background: #050505;
+    color: #eeeeee;
+    font-family: Arial, sans-serif;
 }
 
 button {
     border: 1px solid #555;
     background: #151515;
     color: white;
-    padding: 12px 18px;
+    padding: 13px 18px;
     cursor: pointer;
     font-size: 15px;
 }
 
 button:hover {
-    background: #242424;
+    background: #252525;
 }
 
 button:active {
-    transform: scale(.98);
+    transform: scale(0.98);
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    margin: 10px 0;
+    background: #050505;
+    border: 1px solid #555;
+    color: white;
+    font-size: 18px;
+    text-transform: uppercase;
 }
 
 .hidden {
     display: none !important;
 }
 
-/* MENU */
+
+/* =========================
+   MENU
+========================= */
 
 #menu {
     min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     padding: 20px;
 }
 
 .menuBox {
-    width: min(500px, 100%);
-    border: 1px solid #444;
+    width: min(520px, 100%);
+    padding: 35px;
     background: #101010;
-    padding: 30px;
-    box-shadow: 0 0 40px #000;
+    border: 1px solid #444;
+    box-shadow: 0 0 50px #000;
 }
 
 .menuBox h1 {
-    margin-top: 0;
-    letter-spacing: 5px;
+    margin: 0 0 10px;
+    letter-spacing: 6px;
 }
 
 .menuBox p {
@@ -72,25 +86,34 @@ button:active {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    margin-top: 20px;
 }
 
-input {
-    width: 100%;
-    padding: 13px;
-    margin: 10px 0;
-    background: #050505;
-    color: white;
-    border: 1px solid #555;
-    font-size: 18px;
-    text-transform: uppercase;
+#joinBox {
+    margin-top: 15px;
 }
 
 #status {
-    margin-top: 15px;
+    margin-top: 20px;
     color: #aaa;
 }
 
-/* GAME */
+#roomInfo {
+    margin-top: 25px;
+    padding: 15px;
+    border: 1px solid #444;
+    background: #080808;
+}
+
+#roomCodeText {
+    font-size: 35px;
+    letter-spacing: 8px;
+}
+
+
+/* =========================
+   GAME
+========================= */
 
 #game {
     min-height: 100vh;
@@ -98,16 +121,16 @@ input {
 
 .topbar {
     height: 60px;
-    border-bottom: 1px solid #333;
-    background: #0d0d0d;
+    padding: 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    background: #0d0d0d;
+    border-bottom: 1px solid #333;
 }
 
 .topbar strong {
-    letter-spacing: 3px;
+    letter-spacing: 4px;
 }
 
 #roleText {
@@ -115,41 +138,56 @@ input {
 }
 
 .gameArea {
-    min-height: calc(100vh - 60px);
     padding: 20px;
 }
 
 .panel {
-    max-width: 1100px;
+    width: min(1100px, 100%);
     margin: auto;
 }
 
+
+/* =========================
+   OFFICE
+========================= */
+
 .screen {
-    border: 1px solid #444;
-    background:
-        radial-gradient(circle at center, #222 0%, #090909 60%);
-    min-height: 400px;
-    padding: 25px;
     position: relative;
+    min-height: 430px;
+    padding: 25px;
     overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #242424 0%,
+            #090909 65%
+        );
+
+    border: 1px solid #444;
 }
 
 .noise {
     position: absolute;
     inset: 0;
-    opacity: .08;
     pointer-events: none;
-    background-image:
+    opacity: 0.08;
+
+    background:
         repeating-linear-gradient(
             0deg,
             transparent,
             transparent 3px,
-            #fff 4px
+            white 4px
         );
 }
 
 .office {
-    min-height: 350px;
+    position: relative;
+    z-index: 1;
+
+    min-height: 360px;
+
     display: grid;
     grid-template-columns: 1fr 1.5fr 1fr;
     gap: 20px;
@@ -157,42 +195,56 @@ input {
 }
 
 .door {
-    height: 280px;
-    border: 4px solid #333;
-    background: #111;
-    position: relative;
+    height: 290px;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
+    background: #111;
+    border: 4px solid #333;
+
+    transition:
+        background 0.15s,
+        border-color 0.15s;
 }
 
 .door.closed {
     background:
         repeating-linear-gradient(
             90deg,
-            #202020 0,
-            #202020 12px,
+            #242424 0,
+            #242424 12px,
             #111 12px,
             #111 24px
         );
+
     border-color: #aaa;
 }
 
 .doorText {
-    background: #000;
     padding: 8px;
+    background: #000;
     font-size: 12px;
 }
 
 .officeCenter {
-    height: 300px;
-    border: 1px solid #333;
-    background: #080808;
+    height: 310px;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     text-align: center;
+
+    background: #080808;
+    border: 1px solid #333;
 }
+
+
+/* =========================
+   CONTROLS
+========================= */
 
 .controls {
     display: grid;
@@ -202,118 +254,145 @@ input {
 }
 
 .controls button.active {
-    background: #eee;
+    background: #eeeeee;
     color: #000;
-}
-
-.cameraMap {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.camera {
-    min-height: 90px;
-    border: 1px solid #444;
-    background: #101010;
-    padding: 10px;
-}
-
-.camera.active {
-    border-color: white;
 }
 
 .info {
     margin-top: 15px;
+    padding: 15px;
+
+    background: #0b0b0b;
     border: 1px solid #333;
-    padding: 12px;
-    background: #0c0c0c;
 }
 
-.power {
-    margin-top: 15px;
-}
 
-.powerBar {
-    height: 12px;
-    border: 1px solid #555;
-}
+/* =========================
+   ANIMATRONIC
+========================= */
 
-.powerFill {
-    height: 100%;
-    width: 100%;
-    background: #ddd;
+.animatronicScreen {
+    min-height: 520px;
 }
 
 .animatronicView {
+    position: relative;
+    z-index: 1;
+
     text-align: center;
 }
 
 .bigFace {
     width: 180px;
     height: 180px;
-    border-radius: 50%;
-    background: #222;
-    border: 5px solid #555;
+
     margin: 20px auto;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
+    border-radius: 50%;
+    border: 5px solid #555;
+    background: #222;
+
     font-size: 70px;
 }
 
 .location {
-    font-size: 22px;
-    margin-bottom: 15px;
+    margin: 15px 0;
+    font-size: 24px;
+}
+
+.location span {
+    color: #aaa;
 }
 
 .moveButtons {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-    margin-top: 20px;
+
+    margin-top: 25px;
 }
 
-.message {
-    margin-top: 20px;
-    border: 1px solid #555;
-    padding: 15px;
-    background: #0b0b0b;
+.moveButtons button {
+    min-height: 60px;
 }
+
+#attackBtn {
+    width: 100%;
+    margin-top: 15px;
+
+    border-color: #777;
+    font-weight: bold;
+}
+
+
+/* =========================
+   GAME OVER
+========================= */
 
 #gameOver {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.9);
+
+    z-index: 100;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
-    text-align: center;
+
+    background: rgba(0, 0, 0, 0.94);
 }
 
 .gameOverBox {
-    border: 1px solid #666;
+    width: min(500px, 90%);
     padding: 40px;
+
+    text-align: center;
+
     background: #101010;
+    border: 1px solid #666;
 }
 
+.gameOverBox h1 {
+    letter-spacing: 3px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
 @media (max-width: 700px) {
+
+    .gameArea {
+        padding: 10px;
+    }
+
     .office {
         grid-template-columns: 1fr;
     }
 
-    .cameraMap {
-        grid-template-columns: repeat(2, 1fr);
+    .door {
+        height: 120px;
+    }
+
+    .officeCenter {
+        height: 220px;
+    }
+
+    .moveButtons {
+        grid-template-columns: 1fr;
+    }
+
+    .menuBox {
+        padding: 25px;
     }
 
     .topbar {
         padding: 0 10px;
-    }
-
-    .gameArea {
-        padding: 10px;
     }
 }
 </style>
@@ -322,7 +401,9 @@ input {
 
 <body>
 
-<!-- MENU -->
+<!-- =========================
+     MENU
+========================= -->
 
 <div id="menu">
 
@@ -332,11 +413,12 @@ input {
     <h1>NIGHT SHIFT</h1>
 
     <p>
-        Два игрока. Один охраняет офис.
-        Второй управляет аниматроником.
+        Один игрок — охранник.
+        Второй — аниматроник.
     </p>
 
     <div class="menuButtons">
+
         <button id="createBtn">
             Создать комнату
         </button>
@@ -344,13 +426,16 @@ input {
         <button id="showJoinBtn">
             Войти в комнату
         </button>
+
     </div>
+
 
     <div id="joinBox" class="hidden">
 
         <input
             id="roomCode"
             maxlength="5"
+            autocomplete="off"
             placeholder="КОД КОМНАТЫ"
         >
 
@@ -360,14 +445,24 @@ input {
 
     </div>
 
+
     <div id="status">
         Подключение к серверу...
     </div>
 
+
     <div id="roomInfo" class="hidden">
-        <p>Код комнаты:</p>
-        <h2 id="roomCodeText"></h2>
-        <p>Отправь этот код второму игроку.</p>
+
+        <p>
+            Код комнаты:
+        </p>
+
+        <div id="roomCodeText"></div>
+
+        <p>
+            Отправь этот код второму игроку.
+        </p>
+
     </div>
 
 </div>
@@ -375,26 +470,37 @@ input {
 
 </div>
 
-<!-- GAME -->
+<!-- =========================
+     GAME
+========================= -->
 
 <div id="game" class="hidden">
 
 ```
 <div class="topbar">
 
-    <strong>NIGHT SHIFT</strong>
+    <strong>
+        NIGHT SHIFT
+    </strong>
 
     <span id="roleText"></span>
 
 </div>
 
+
 <div class="gameArea">
 
     <div class="panel">
 
-        <!-- GUARD -->
 
-        <div id="guardPanel" class="hidden">
+        <!-- =====================
+             GUARD
+        ====================== -->
+
+        <div
+            id="guardPanel"
+            class="hidden"
+        >
 
             <div class="screen">
 
@@ -402,47 +508,61 @@ input {
 
                 <div class="office">
 
+
                     <div
                         id="leftDoor"
                         class="door"
                     >
+
                         <span class="doorText">
                             LEFT DOOR
                         </span>
+
                     </div>
+
 
                     <div class="officeCenter">
 
                         <div>
-                            <h2>ОФИС ОХРАННИКА</h2>
+
+                            <h2>
+                                ОФИС ОХРАННИКА
+                            </h2>
 
                             <p>
                                 Следи за коридорами.
-                                Закрывай двери вовремя.
                             </p>
 
                             <p>
-                                ⚠️ Аниматроник:
-                                <strong id="guardAnimLocation">
-                                    неизвестно
-                                </strong>
+                                Аниматроник:
                             </p>
+
+                            <strong
+                                id="guardAnimLocation"
+                            >
+                                STAGE
+                            </strong>
+
                         </div>
 
                     </div>
+
 
                     <div
                         id="rightDoor"
                         class="door"
                     >
+
                         <span class="doorText">
                             RIGHT DOOR
                         </span>
+
                     </div>
 
                 </div>
 
             </div>
+
 
             <div class="controls">
 
@@ -464,73 +584,114 @@ input {
 
             </div>
 
+
             <div class="info">
-                <strong>Состояние:</strong>
+
+                <strong>
+                    Состояние:
+                </strong>
+
                 <span id="guardMessage">
                     Ожидание...
                 </span>
+
             </div>
 
         </div>
 
 
-        <!-- ANIMATRONIC -->
 
-        <div id="animatronicPanel" class="hidden">
+        <!-- =====================
+             ANIMATRONIC
+        ====================== -->
 
-            <div class="screen">
+        <div
+            id="animatronicPanel"
+            class="hidden"
+        >
+
+            <div class="screen animatronicScreen">
+
+                <div class="noise"></div>
 
                 <div class="animatronicView">
 
-                    <h2>АНИМАТРОНИК</h2>
+                    <h2>
+                        АНИМАТРОНИК
+                    </h2>
+
 
                     <div class="bigFace">
-                        👁
+                        👁️
                     </div>
+
 
                     <div class="location">
+
                         Позиция:
-                        <strong id="animLocation">
+
+                        <strong
+                            id="animLocation"
+                        >
                             STAGE
                         </strong>
+
                     </div>
 
+
                     <p>
-                        Доберись до одной из дверей
-                        и атакуй офис.
+                        Выбери следующую локацию.
                     </p>
+
 
                     <div class="moveButtons">
 
-                        <button data-location="stage">
-                            Сцена
+                        <button
+                            data-location="stage"
+                        >
+                            🎭 Сцена
                         </button>
 
-                        <button data-location="dining">
-                            Столовая
+
+                        <button
+                            data-location="dining"
+                        >
+                            🍽️ Столовая
                         </button>
 
-                        <button data-location="leftHall">
-                            Левый коридор
+
+                        <button
+                            data-location="leftHall"
+                        >
+                            ← Левый коридор
                         </button>
 
-                        <button data-location="rightHall">
-                            Правый коридор
+
+                        <button
+                            data-location="rightHall"
+                        >
+                            Правый коридор →
                         </button>
 
-                        <button data-location="leftDoor">
-                            Левая дверь
+
+                        <button
+                            data-location="leftDoor"
+                        >
+                            🚪 Левая дверь
                         </button>
 
-                        <button data-location="rightDoor">
-                            Правая дверь
+
+                        <button
+                            data-location="rightDoor"
+                        >
+                            🚪 Правая дверь
                         </button>
 
                     </div>
 
+
                     <button
                         id="attackBtn"
-                        style="margin-top:20px;width:100%;"
                     >
                         ⚠️ АТАКОВАТЬ
                     </button>
@@ -539,21 +700,32 @@ input {
 
             </div>
 
+
             <div class="info">
-                <strong>Состояние:</strong>
+
+                <strong>
+                    Состояние:
+                </strong>
+
                 <span id="animMessage">
                     Ожидание...
                 </span>
+
             </div>
 
         </div>
 
 
-        <div class="message">
-            <strong>Сервер:</strong>
+        <div class="info">
+
+            <strong>
+                Сервер:
+            </strong>
+
             <span id="serverMessage">
                 Подключение...
             </span>
+
         </div>
 
     </div>
@@ -563,9 +735,14 @@ input {
 
 </div>
 
-<!-- GAME OVER -->
+<!-- =========================
+     GAME OVER
+========================= -->
 
-<div id="gameOver" class="hidden">
+<div
+    id="gameOver"
+    class="hidden"
+>
 
 ```
 <div class="gameOverBox">
@@ -576,7 +753,9 @@ input {
 
     <p id="gameOverText"></p>
 
-    <button onclick="location.reload()">
+    <button
+        id="restartBtn"
+    >
         Играть снова
     </button>
 
@@ -586,12 +765,21 @@ input {
 </div>
 
 <script>
+
 let socket = null;
 
 let player = null;
+
 let roomCode = null;
 
 let state = null;
+
+
+/*
+=================================
+DOM
+=================================
+*/
 
 const menu =
     document.getElementById("menu");
@@ -614,80 +802,173 @@ const guardPanel =
 const animatronicPanel =
     document.getElementById("animatronicPanel");
 
+const roleText =
+    document.getElementById("roleText");
+
 const serverMessage =
     document.getElementById("serverMessage");
 
 
-function connect() {
+/*
+=================================
+CONNECT
+=================================
+*/
+
+function connectToServer() {
 
     const protocol =
         location.protocol === "https:"
             ? "wss:"
             : "ws:";
 
+
+    const wsUrl =
+        protocol +
+        "//" +
+        location.host;
+
+
+    console.log(
+        "Connecting to:",
+        wsUrl
+    );
+
+
     socket =
-        new WebSocket(
-            protocol +
-            "//" +
-            location.host
-        );
+        new WebSocket(wsUrl);
 
-    socket.addEventListener("open", () => {
 
-        status.textContent =
-            "Сервер подключен.";
+    socket.addEventListener(
+        "open",
+        () => {
 
-    });
+            console.log(
+                "WebSocket connected"
+            );
 
-    socket.addEventListener("close", () => {
+            status.textContent =
+                "Сервер подключён.";
 
-        status.textContent =
-            "Соединение с сервером потеряно.";
-
-    });
-
-    socket.addEventListener("error", () => {
-
-        status.textContent =
-            "Ошибка подключения к серверу.";
-
-    });
-
-    socket.addEventListener("message", event => {
-
-        let data;
-
-        try {
-            data = JSON.parse(event.data);
-        } catch {
-            return;
         }
+    );
 
-        handleMessage(data);
 
-    });
+    socket.addEventListener(
+        "close",
+        () => {
+
+            console.log(
+                "WebSocket disconnected"
+            );
+
+            status.textContent =
+                "Соединение с сервером потеряно.";
+
+        }
+    );
+
+
+    socket.addEventListener(
+        "error",
+        (error) => {
+
+            console.error(
+                "WebSocket error:",
+                error
+            );
+
+            status.textContent =
+                "Ошибка подключения.";
+
+        }
+    );
+
+
+    socket.addEventListener(
+        "message",
+        (event) => {
+
+            let data;
+
+            try {
+
+                data =
+                    JSON.parse(
+                        event.data
+                    );
+
+            } catch {
+
+                console.error(
+                    "Invalid server message"
+                );
+
+                return;
+            }
+
+
+            handleServerMessage(data);
+
+        }
+    );
 }
 
+
+/*
+=================================
+SEND
+=================================
+*/
 
 function send(data) {
 
     if (
-        socket &&
-        socket.readyState === WebSocket.OPEN
+        !socket ||
+        socket.readyState !== WebSocket.OPEN
     ) {
-        socket.send(
-            JSON.stringify(data)
+
+        console.error(
+            "WebSocket is not connected"
         );
+
+        return false;
     }
+
+
+    console.log(
+        "SEND:",
+        data
+    );
+
+
+    socket.send(
+        JSON.stringify(data)
+    );
+
+
+    return true;
 }
 
 
-function handleMessage(data) {
+/*
+=================================
+SERVER MESSAGES
+=================================
+*/
+
+function handleServerMessage(data) {
+
+    console.log(
+        "SERVER:",
+        data
+    );
+
 
     if (data.type === "connected") {
 
         status.textContent =
-            "Готово. Можно создавать комнату.";
+            "Сервер подключён. Можно создавать комнату.";
 
         return;
     }
@@ -695,17 +976,28 @@ function handleMessage(data) {
 
     if (data.type === "created") {
 
-        player = data.player;
-        roomCode = data.code;
-        state = data.state;
+        player =
+            data.player;
 
-        roomInfo.classList.remove("hidden");
+        roomCode =
+            data.code;
+
+        state =
+            data.state;
+
+
+        roomInfo.classList.remove(
+            "hidden"
+        );
+
 
         roomCodeText.textContent =
             roomCode;
 
+
         status.textContent =
-            "Комната создана. Ожидание игрока...";
+            "Комната создана. Ждём второго игрока...";
+
 
         return;
     }
@@ -713,11 +1005,18 @@ function handleMessage(data) {
 
     if (data.type === "joined") {
 
-        player = data.player;
-        roomCode = data.code;
-        state = data.state;
+        player =
+            data.player;
+
+        roomCode =
+            data.code;
+
+        state =
+            data.state;
+
 
         startGame();
+
 
         return;
     }
@@ -725,9 +1024,12 @@ function handleMessage(data) {
 
     if (data.type === "start") {
 
-        state = data.state;
+        state =
+            data.state;
+
 
         startGame();
+
 
         return;
     }
@@ -735,9 +1037,12 @@ function handleMessage(data) {
 
     if (data.type === "state") {
 
-        state = data.state;
+        state =
+            data.state;
+
 
         updateGame();
+
 
         return;
     }
@@ -745,9 +1050,12 @@ function handleMessage(data) {
 
     if (data.type === "attackBlocked") {
 
-        state = data.state;
+        state =
+            data.state;
+
 
         updateGame();
+
 
         return;
     }
@@ -755,14 +1063,18 @@ function handleMessage(data) {
 
     if (data.type === "gameOver") {
 
-        state = data.state;
+        state =
+            data.state;
+
 
         updateGame();
+
 
         showGameOver(
             "АНИМАТРОНИК ПОБЕДИЛ",
             "Охранник не успел закрыть дверь."
         );
+
 
         return;
     }
@@ -775,6 +1087,7 @@ function handleMessage(data) {
             "Второй игрок покинул комнату."
         );
 
+
         return;
     }
 
@@ -784,42 +1097,80 @@ function handleMessage(data) {
         status.textContent =
             data.message;
 
-        if (game.classList.contains("hidden")) {
-            alert(data.message);
-        }
+
+        alert(
+            data.message
+        );
+
 
         return;
     }
+
 }
 
 
+/*
+=================================
+START GAME
+=================================
+*/
+
 function startGame() {
 
-    menu.classList.add("hidden");
+    menu.classList.add(
+        "hidden"
+    );
 
-    game.classList.remove("hidden");
+    game.classList.remove(
+        "hidden"
+    );
+
 
     if (player === 1) {
 
-        guardPanel.classList.remove("hidden");
-        animatronicPanel.classList.add("hidden");
-
-        document.getElementById("roleText").textContent =
+        roleText.textContent =
             "ОХРАННИК";
 
-    } else {
 
-        guardPanel.classList.add("hidden");
-        animatronicPanel.classList.remove("hidden");
+        guardPanel.classList.remove(
+            "hidden"
+        );
 
-        document.getElementById("roleText").textContent =
-            "АНИМАТРОНИК";
+
+        animatronicPanel.classList.add(
+            "hidden"
+        );
 
     }
+
+
+    if (player === 2) {
+
+        roleText.textContent =
+            "АНИМАТРОНИК";
+
+
+        guardPanel.classList.add(
+            "hidden"
+        );
+
+
+        animatronicPanel.classList.remove(
+            "hidden"
+        );
+
+    }
+
 
     updateGame();
 }
 
+
+/*
+=================================
+UPDATE GAME
+=================================
+*/
 
 function updateGame() {
 
@@ -827,37 +1178,60 @@ function updateGame() {
         return;
     }
 
+
     serverMessage.textContent =
         state.message;
 
 
-    // ОХРАННИК
+    /*
+    ==============================
+    GUARD
+    ==============================
+    */
 
     if (player === 1) {
 
         const leftDoor =
-            document.getElementById("leftDoor");
+            document.getElementById(
+                "leftDoor"
+            );
+
 
         const rightDoor =
-            document.getElementById("rightDoor");
+            document.getElementById(
+                "rightDoor"
+            );
+
 
         const leftDoorBtn =
-            document.getElementById("leftDoorBtn");
+            document.getElementById(
+                "leftDoorBtn"
+            );
+
 
         const rightDoorBtn =
-            document.getElementById("rightDoorBtn");
+            document.getElementById(
+                "rightDoorBtn"
+            );
+
 
         const leftLightBtn =
-            document.getElementById("leftLightBtn");
+            document.getElementById(
+                "leftLightBtn"
+            );
+
 
         const rightLightBtn =
-            document.getElementById("rightLightBtn");
+            document.getElementById(
+                "rightLightBtn"
+            );
 
 
         leftDoor.classList.toggle(
             "closed",
             state.guard.leftDoor
         );
+
 
         rightDoor.classList.toggle(
             "closed",
@@ -870,15 +1244,18 @@ function updateGame() {
             state.guard.leftDoor
         );
 
+
         rightDoorBtn.classList.toggle(
             "active",
             state.guard.rightDoor
         );
 
+
         leftLightBtn.classList.toggle(
             "active",
             state.guard.leftLight
         );
+
 
         rightLightBtn.classList.toggle(
             "active",
@@ -891,14 +1268,20 @@ function updateGame() {
         ).textContent =
             state.animatronic.location;
 
+
         document.getElementById(
             "guardMessage"
         ).textContent =
             state.message;
+
     }
 
 
-    // АНИМАТРОНИК
+    /*
+    ==============================
+    ANIMATRONIC
+    ==============================
+    */
 
     if (player === 2) {
 
@@ -907,179 +1290,262 @@ function updateGame() {
         ).textContent =
             state.animatronic.location;
 
+
         document.getElementById(
             "animMessage"
         ).textContent =
             state.message;
+
     }
+
 }
 
 
-// СОЗДАТЬ
+/*
+=================================
+CREATE ROOM
+=================================
+*/
 
 document
     .getElementById("createBtn")
-    .addEventListener("click", () => {
+    .addEventListener(
+        "click",
+        () => {
 
-        if (!socket ||
-            socket.readyState !== WebSocket.OPEN) {
+            send({
+                type: "create"
+            });
 
-            alert(
-                "Сервер ещё не подключился."
-            );
-
-            return;
         }
-
-        send({
-            type: "create"
-        });
-
-    });
+    );
 
 
-// ПОКАЗАТЬ ВХОД
+/*
+=================================
+SHOW JOIN
+=================================
+*/
 
 document
     .getElementById("showJoinBtn")
-    .addEventListener("click", () => {
+    .addEventListener(
+        "click",
+        () => {
 
-        document
-            .getElementById("joinBox")
-            .classList.remove("hidden");
+            document
+                .getElementById("joinBox")
+                .classList.remove(
+                    "hidden"
+                );
 
-    });
+        }
+    );
 
 
-// ВОЙТИ
+/*
+=================================
+JOIN ROOM
+=================================
+*/
 
 document
     .getElementById("joinBtn")
-    .addEventListener("click", () => {
+    .addEventListener(
+        "click",
+        () => {
 
-        const code =
-            document
-                .getElementById("roomCode")
-                .value
-                .trim()
-                .toUpperCase();
+            const input =
+                document.getElementById(
+                    "roomCode"
+                );
 
-        if (code.length !== 5) {
 
-            alert(
-                "Код должен содержать 5 символов."
-            );
+            const code =
+                input.value
+                    .trim()
+                    .toUpperCase();
 
-            return;
+
+            if (code.length !== 5) {
+
+                alert(
+                    "Код комнаты должен содержать 5 символов."
+                );
+
+                return;
+            }
+
+
+            send({
+                type: "join",
+                code: code
+            });
+
         }
-
-        send({
-            type: "join",
-            code
-        });
-
-    });
+    );
 
 
-// ДВЕРИ И СВЕТ
+/*
+=================================
+GUARD BUTTONS
+=================================
+*/
 
 document
     .getElementById("leftDoorBtn")
-    .addEventListener("click", () => {
+    .addEventListener(
+        "click",
+        () => {
 
-        send({
-            type: "guardAction",
-            action: "leftDoor"
-        });
+            send({
+                type: "guardAction",
+                action: "leftDoor"
+            });
 
-    });
+        }
+    );
 
 
 document
     .getElementById("rightDoorBtn")
-    .addEventListener("click", () => {
+    .addEventListener(
+        "click",
+        () => {
 
-        send({
-            type: "guardAction",
-            action: "rightDoor"
-        });
+            send({
+                type: "guardAction",
+                action: "rightDoor"
+            });
 
-    });
+        }
+    );
 
 
 document
     .getElementById("leftLightBtn")
-    .addEventListener("click", () => {
+    .addEventListener(
+        "click",
+        () => {
 
-        send({
-            type: "guardAction",
-            action: "leftLight"
-        });
+            send({
+                type: "guardAction",
+                action: "leftLight"
+            });
 
-    });
+        }
+    );
 
 
 document
     .getElementById("rightLightBtn")
-    .addEventListener("click", () => {
-
-        send({
-            type: "guardAction",
-            action: "rightLight"
-        });
-
-    });
-
-
-// ДВИЖЕНИЕ АНИМАТРОНИКА
-
-document
-    .querySelectorAll("[data-location]")
-    .forEach(button => {
-
-        button.addEventListener("click", () => {
+    .addEventListener(
+        "click",
+        () => {
 
             send({
-                type: "animatronicMove",
-                location:
-                    button.dataset.location
+                type: "guardAction",
+                action: "rightLight"
             });
 
-        });
+        }
+    );
 
-    });
+
+/*
+=================================
+ANIMATRONIC MOVEMENT
+=================================
+*/
+
+const movementButtons =
+    document.querySelectorAll(
+        "[data-location]"
+    );
 
 
-// АТАКА
+movementButtons.forEach(
+    (button) => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const location =
+                    button.getAttribute(
+                        "data-location"
+                    );
+
+
+                console.log(
+                    "MOVE CLICK:",
+                    location
+                );
+
+
+                send({
+                    type: "animatronicMove",
+                    location: location
+                });
+
+            }
+        );
+
+    }
+);
+
+
+/*
+=================================
+ATTACK
+=================================
+*/
 
 document
     .getElementById("attackBtn")
-    .addEventListener("click", () => {
+    .addEventListener(
+        "click",
+        () => {
 
-        send({
-            type: "attack"
-        });
-
-    });
-
-
-function showGameOver(title, text) {
-
-    document
-        .getElementById("gameOverTitle")
-        .textContent = title;
-
-    document
-        .getElementById("gameOverText")
-        .textContent = text;
-
-    document
-        .getElementById("gameOver")
-        .classList.remove("hidden");
-}
+            console.log(
+                "ATTACK CLICK"
+            );
 
 
-connect();
+            send({
+                type: "attack"
+            });
+
+        }
+    );
+
+
+/*
+=================================
+RESTART
+=================================
+*/
+
+document
+    .getElementById("restartBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            location.reload();
+
+        }
+    );
+
+
+/*
+=================================
+START CONNECTION
+=================================
+*/
+
+connectToServer();
+
 </script>
 
 </body>
